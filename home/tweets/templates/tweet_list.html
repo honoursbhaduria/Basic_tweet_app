@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1 class="mb-4">All Tweets</h1>
+
+<a class="btn btn-primary mb-3" href="{% url 'tweet_create' %}">Create a tweet</a>
+
+<div class="container row gap-3">
+    {% for tweet in tweets %}
+    <div class="card" style="width: 18rem;">
+        {% if tweet.image %}
+            <img src="{{ tweet.image.url }}" class="card-img-top" alt="Tweet image">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">@{{ tweet.user.username }}</h5>
+            <p class="card-text">{{ tweet.content }}</p>
+            <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-warning">Edit</a>
+            <form action="{% url 'tweet_delete' tweet.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <p>No tweets found.</p>
+    {% endfor %}
+</div>
+{% endblock %}
