@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Tweet
-from .forms import tweetForm
+from .forms import TweetForm , UserRegistrationForm
+
 
 # Home Page
 def index(request):
@@ -12,38 +14,50 @@ def tweet_list(request):
     return render(request, 'tweet_list.html', {'tweets': tweets})
 
 # Create a tweet
+@login_required
 def tweet_create(request):
     if request.method == "POST":
-        form = tweetForm(request.POST, request.FILES)
+        form = TweetForm(request.POST, request.FILES)
         if form.is_valid():
             tweet = form.save(commit=False)
             tweet.user = request.user
             tweet.save()
             return redirect('tweet_list')
     else:
-        form = tweetForm()
+        form = TweetForm()
     return render(request, 'tweet_form.html', {'form': form})
 
 # Edit a tweet
+@login_required
 def tweet_edit(request, tweet_id):
     tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
 
     if request.method == "POST":
-        form = tweetForm(request.POST, request.FILES, instance=tweet)
+        form = TweetForm(request.POST, request.FILES, instance=tweet)
         if form.is_valid():
             tweet = form.save(commit=False)
             tweet.user = request.user
             tweet.save()
             return redirect('tweet_list')
     else:
-        form = tweetForm(instance=tweet)
+        form = TweetForm(instance=tweet)
     
     return render(request, 'tweet_form.html', {'form': form})
 
 # Delete a tweet
+@login_required
 def tweet_delete(request, tweet_id):
     tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
     if request.method == "POST":
         tweet.delete()
         return redirect('tweet_list')
     return render(request, 'tweet_confirm_delete.html', {'tweet': tweet})
+
+def register(request):
+        if request.method == "POST": 
+            form =   UserRegistrationForm(request.POST)
+        else:
+            form = UserRegistrationForm()
+        
+
+        return render(request, 'registration/register.html', {'form': form})
