@@ -1,11 +1,23 @@
-{% extends "base.html" %}
+{% extends 'layout.html' %}
 {% load static %}
 
 {% block content %}
+<h2>
+    {% if form.instance.pk %}
+    edit tweet
+    {% else %}
+    create tweet 
+    {%endif%}
+    <form method="post" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded"> New Tweet</button>
+    </form>
+</h2>
 <h2 class="text-xl font-bold mb-4">Compose Tweet</h2>
-<form method="post" enctype="multipart/form-data" class="space-y-4">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Tweet</button>
-</form>
+
+
 {% endblock %}
+
+
+
