@@ -135,3 +135,13 @@ MEDIA_ROOT  = os.path.join(BASE_DIR , 'media')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR , 'static')]
+
+
+# LOGIN_REDIRECT_URL = '/tweets/'
+
+from django.urls import reverse_lazy
+
+LOGIN_REDIRECT_URL = reverse_lazy('tweet_list')
+
+
+LOGOUT_REDIRECT_URL = '/'

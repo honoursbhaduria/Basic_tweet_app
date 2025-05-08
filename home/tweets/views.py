@@ -67,3 +67,8 @@ def register(request):
         
 
         return render(request, 'registration/register.html', {'form': form})
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect("tweet_list")

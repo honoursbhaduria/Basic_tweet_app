@@ -8,11 +8,11 @@
         <p>Are you sure you want to delete this tweet?</p>
         <p><strong>"{{ object.text|truncatechars:50 }}"</strong></p>
         {% if object.photo %}
-            <img src="{{ object.photo.url }}" alt="Tweet photo" class="img-fluid mb-2" style="max-height: 150px;">
+            <img src="{{ object.photo }}" alt="Tweet photo" class="img-fluid mb-2" style="max-height: 150px;">
         {% endif %}
     </div>
 
-    <form method="post">
+    <form method="POST"> 
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Yes, Delete</button>
         <a href="{% url 'tweet_list' %}" class="btn btn-success">Cancel</a>
